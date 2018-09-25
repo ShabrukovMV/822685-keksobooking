@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Михаил Шабруков](https://up.htmlacademy.ru/nodejs/2/user/822685).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Вохмянин](https://up.htmlacademy.ru/nodejs/2/user/530823).
 
 ---
 
