@@ -4,7 +4,8 @@
   "description": "Учебный проект интенсив Node.js, уровень 1",
   "main": "index.js",
   "scripts": {
-    "test": "eslint ."
+    "test:lint": "eslint .",
+    "test": "npm run test:lint"
   },
   "repository": {
     "type": "git",
