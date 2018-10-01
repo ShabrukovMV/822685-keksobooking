@@ -1,31 +1,34 @@
 'use strict';
 
 const author = require(`./author`);
-const version = require(`./version`);
 const description = require(`./description`);
 const license = require(`./license`);
+const version = require(`./version`);
 
-const argument = process.argv[2];
+const help = require(`./help`);
+const wrong = require(`./wrong`);
+const empty = require(`./empty`);
 
-switch (argument) {
-  case `--author`:
+module.exports = {
+  '--author': () => {
     author.execute();
-    break;
-  case `--description`:
+  },
+  '--description': () => {
     description.execute();
-    break;
-  case `--license`:
+  },
+  '--license': () => {
     license.execute();
-    break;
-  case `--version`:
+  },
+  '--version': () => {
     version.execute();
-    break;
-  default:
-    console.log(`Неизвестная команда { ${argument ? argument : ``} }
-Доступные команды:
---${author.name} — ${author.description}
---${description.name} — ${description.description}
---${license.name} — ${license.description}
---${version.name} — ${version.description}`);
-    process.exit(1);
-}
+  },
+  '--help': () => {
+    help.execute();
+  },
+  'empty': () => {
+    empty.execute();
+  },
+  'wrong': (argument) => {
+    wrong.execute(argument);
+  },
+};
