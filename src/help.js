@@ -10,10 +10,10 @@ module.exports = {
   description: `Печатает список доступных команд.`,
   execute() {
     console.log(`Доступные команды:
---help — список доступных команд.      
---${author.name} — ${author.description}
---${description.name} — ${description.description}
---${license.name} — ${license.description}
---${version.name} — ${version.description}`);
+${`--help`.grey} — ${`список доступных команд.`.green}      
+${`--${author.name}`.grey} — ${author.description.green}
+${`--${description.name}`.grey} — ${description.description.green}
+${`--${license.name}`.grey} — ${license.description.green}
+${`--${version.name}`.grey} — ${version.description.green}`);
   },
 };

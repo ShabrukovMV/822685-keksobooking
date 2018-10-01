@@ -1,8 +1,12 @@
 'use strict';
 
-const commandHandler = require(`./src/load-commands`);
+require(`colors`);
 
-const availableCommands = [`--version`, `--help`, `--author`, `--description`, `--license`];
+const commandHandler = require(`./src/load-commands`);
+const wrong = require(`./src/wrong`);
+const empty = require(`./src/empty`);
+
+const availableCommands = Object.keys(commandHandler);
 
 //   Получаем аргумент для нашего скрипта, undefined - если параметр не задан
 const argument = process.argv[2];
@@ -10,17 +14,15 @@ const argument = process.argv[2];
 //  Получаем индекс команды среди возможных комманд
 const commandIndex = availableCommands.indexOf(argument);
 
-//  Рассчитываем вариант действия
-//  'wrong' - неверная команда, 'empty' - нет аргумента, иначе - возможная обрабатываемая команда
-let command;
 if (argument) {
-  if (commandIndex < 0) {
-    command = `wrong`;
+  if (commandIndex >= 0) {
+    const command = availableCommands[commandIndex];
+    // Запуск обработчика
+    commandHandler[command]();
   } else {
-    command = availableCommands[commandIndex];
+    wrong.execute(argument);
+    process.exit(1);
   }
 } else {
-  command = `empty`;
+  empty.execute();
 }
-//  Запуск обработчика
-commandHandler[command](argument);

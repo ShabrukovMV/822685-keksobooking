@@ -6,7 +6,7 @@ module.exports = {
   name: `wrong`,
   description: `Печатает предупреждение о неизвестной команде.`,
   execute(argument) {
-    console.log(`Неизвестная команда { ${argument ? argument : ``} }`);
+    console.log(`Неизвестная команда: ${argument ? argument.inverse : ``}`.red);
     help.execute();
   },
 };

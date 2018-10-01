@@ -6,7 +6,7 @@ module.exports = {
   name: `empty`,
   description: `Печатает предупреждение, что команда не задана.`,
   execute() {
-    console.log(`Команда не задана.`);
+    console.log(`Команда не задана.`.magenta);
     help.execute();
   },
 };
