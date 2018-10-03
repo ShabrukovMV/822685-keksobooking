@@ -4,6 +4,7 @@ const author = require(`./author`);
 const description = require(`./description`);
 const license = require(`./license`);
 const version = require(`./version`);
+const generate = require(`./generate`);
 
 const help = require(`./help`);
 
@@ -13,4 +14,5 @@ module.exports = {
   '--license': license.execute,
   '--version': version.execute,
   '--help': help.execute,
+  '--generate': generate,
 };
