@@ -3,7 +3,7 @@
 const generateEntity = () => {
   return {
     "author": {
-      "avatar": `строка, адрес изображения, можно использовать https://robohash.org/{{random-string}}`,
+      "avatar": `https://robohash.org/1111`,
     },
     "offer":
       {
