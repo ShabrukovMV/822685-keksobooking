@@ -141,7 +141,7 @@ describe(`Модуль generate`, () => {
     });
   });
   describe(`Правила для поля "date"`, () => {
-    it(`Существует поле "date" типа "number" от сейчас минус ${conditions.date.daysBack} дней`, () => {
+    it(`Существует поле "date" типа "number" от сейчас минус ${conditions.date.daysBack} дней в формате UNIX`, () => {
       assert(entity.hasOwnProperty(`date`), `Поле "date" отстутвует`);
       assert.equal(typeof entity[`date`], `number`);
       assert.equal(entity[`date`], Math.floor(entity[`date`]), `Поле "date" должно быть целочисленным`);
