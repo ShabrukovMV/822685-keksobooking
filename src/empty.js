@@ -1,10 +1,12 @@
 'use strict';
 
+const fs = require(`fs`);
 const readline = require(`readline`);
+const {promisify} = require(`util`);
 const author = require(`./author`);
 const generateToFile = require(`./generate-to-file`);
-const fs = require(`fs`);
-const {promisify} = require(`util`);
+const packageInfo = require(`../package.json`);
+
 const fsstat = promisify(fs.stat);
 
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
     let fileName;
 
     console.log(`Привет пользователь!
-Эта программа будет запускать сервер ${`«keksobooking»`.green.bold}`);
+Эта программа будет запускать сервер «${packageInfo.name.green.bold}»`);
     author.execute();
 
     rl.setPrompt(`Хотите сгенерировать данные? ${`(y/n)`.green.bold} `);
@@ -93,6 +95,7 @@ module.exports = {
           break;
         default:
           console.log(`Неизвестная стадия сценария!`);
+          rl.close();
       }
     }).on(`close`, () => {
       console.log(`Всего хорошего!`);
@@ -101,6 +104,5 @@ module.exports = {
       console.log(`Ошибка!`);
       process.exit(1);
     });
-  }
-  ,
+  },
 };
