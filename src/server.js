@@ -11,7 +11,7 @@ const path = require(`path`);
 const readFile = util.promisify(fs.readFile);
 
 const hostname = `127.0.0.1`;
-const rootServerPath = `${__dirname}\\..\\static`;
+const rootServerPath = `${__dirname}/../static`;
 const strictListMimeTypes = {
   '.css': `text/css`,
   '.png': `image/png`,
@@ -27,7 +27,7 @@ const readSendFile = async (pathName, res) => {
   let contentType = strictListMimeTypes[path.parse(pathName).ext];
   contentType = contentType ? contentType : `text/html`;
   try {
-    const file = await readFile(`${rootServerPath}\\${pathName}`);
+    const file = await readFile(`${rootServerPath}${pathName}`);
     res.statusCode = 200;
     res.setHeader(`Content-Type`, contentType);
     res.end(file);
@@ -44,7 +44,7 @@ const readSendFile = async (pathName, res) => {
 const serverHandler = (req, res) => {
   let pathName = url.parse(req.url).pathname;
   console.log(`Запрос: ${pathName}`);
-  pathName = pathName !== `/` ? pathName : `index.html`;
+  pathName = pathName !== `/` ? pathName : `/index.html`;
 
   readSendFile(pathName, res);
 };
