@@ -1,7 +1,7 @@
 'use strict';
 
 const express = require(`express`);
-const offersRouter = express.Router();
+const offersRouter = express[`Router`]();
 const NotFoundError = require(`../error/not-found-error`);
 const InvalidParamError = require(`../error/invalid-param-error`);
 const offersGenerator = require(`../offers-generator`);
