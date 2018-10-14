@@ -44,7 +44,7 @@ const generateEntity = () => {
       "x": location.x,
       "y": location.y,
     },
-    "date": new Date().setHours(0, 0, 0, 0) / 1000 - genRndNumInterval(0, conditions.date.daysBack) * conditions.date.dayUNIX,
+    "date": new Date().setUTCHours(0, 0, 0, 0) / 1000 - genRndNumInterval(0, conditions.date.daysBack) * conditions.date.dayUNIX,
   };
 };
 
