@@ -151,8 +151,8 @@ describe(`Модуль generate`, () => {
       assert(entity.hasOwnProperty(`date`), `Поле "date" отстутвует`);
       assert.equal(typeof entity[`date`], `number`);
       assert.equal(entity[`date`], Math.floor(entity[`date`]), `Поле "date" должно быть целочисленным`);
-      assert(entity[`date`] > (new Date() / 1000 - conditions.date.dayUNIX * conditions.date.daysBack), `Значение поля "date" меньше чем ${conditions.date.daysBack} дней назад`);
-      assert(entity[`date`] < (new Date() / 1000), `Значение поля "date" больше чем сейчас`);
+      assert(entity[`date`] > (new Date().setHours(0, 0, 0, 0) / 1000 - conditions.date.dayUNIX * conditions.date.daysBack), `Значение поля "date" меньше чем ${conditions.date.daysBack} дней назад`);
+      assert(entity[`date`] < (new Date().setHours(0, 0, 0, 0) / 1000), `Значение поля "date" больше чем сейчас`);
     });
   });
 });
