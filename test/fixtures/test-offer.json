@@ -1,0 +1,31 @@
+{
+  "author": {
+    "avatar": "https://robohash.org/05uxsbw2mtuv"
+  },
+  "offer": {
+    "title": "Огромный прекрасный дворец",
+    "address": "588,235",
+    "price": 222245,
+    "type": "bungalo",
+    "rooms": 3,
+    "guests": 5,
+    "checkin": "13:00",
+    "checkout": "14:00",
+    "features": [
+      "conditioner",
+      "elevator",
+      "dishwasher"
+    ],
+    "description": "",
+    "photos": [
+      "http://o0.github.io/assets/images/tokyo/hotel1.jpg",
+      "http://o0.github.io/assets/images/tokyo/hotel2.jpg",
+      "http://o0.github.io/assets/images/tokyo/hotel3.jpg"
+    ]
+  },
+  "location": {
+    "x": 588,
+    "y": 235
+  },
+  "date": 1539302400
+}

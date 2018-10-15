@@ -1,12 +1,13 @@
 'use strict';
 
 const express = require(`express`);
-const offersRouter = express.Router(); /* eslint-disable-line new-cap */
+const offersRouter = express.Router(); // eslint-disable-line new-cap
 const NotFoundError = require(`../error/not-found-error`);
 const InvalidParamError = require(`../error/invalid-param-error`);
 const offersGenerator = require(`../offers-generator`);
+const multer = require(`multer`);
 
-const jsonParser = express.json();
+const upload = multer({storage: multer.memoryStorage()});
 
 const offers = offersGenerator();
 
@@ -14,8 +15,10 @@ offersRouter.get(``, (req, res) => {
   const query = req.query;
   let limit = 20;
   let skip = 0;
-  if (query.hasOwnProperty(`skip`) && query.hasOwnProperty(`limit`)) {
+  if (query.hasOwnProperty(`skip`)) {
     skip = parseInt(query.skip, 10) ? parseInt(query.skip, 10) : skip;
+  }
+  if (query.hasOwnProperty(`limit`)) {
     limit = parseInt(query.limit, 10) ? parseInt(query.limit, 10) : limit;
   }
   res.send(offers.slice(skip, limit + skip));
@@ -36,7 +39,7 @@ offersRouter.get(`/:date`, (req, res) => {
   res.send(foundOffer);
 });
 
-offersRouter.post(``, jsonParser, (req, res) => {
+offersRouter.post(``, upload.none(), (req, res) => {
   const body = req.body;
   res.send(body);
 });

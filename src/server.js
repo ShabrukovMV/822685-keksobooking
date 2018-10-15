@@ -1,16 +1,18 @@
 'use strict';
 
+const packageInfo = require(`../package.json`);
+
 const express = require(`express`);
 const offersRouter = require(`./offers/route`);
 const app = express();
 
-const packageInfo = require(`../package.json`);
+const jsonParser = express.json();
 
 const hostname = `127.0.0.1`;
 const staticDir = `${__dirname}/../static`;
 
 const LOG_HANDLER = (req, res, next) => {
-  console.log(`Пришёл запрос: ${req.path}`);
+  console.log(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}, тело запроса: ${JSON.stringify(req.body)}`);
   next();
 };
 
@@ -26,7 +28,7 @@ const ERROR_HANDLER = (err, req, res, next) => {
   }
 };
 
-app.use(LOG_HANDLER);
+app.use(jsonParser, LOG_HANDLER);
 
 app.use(express.static(staticDir));
 
