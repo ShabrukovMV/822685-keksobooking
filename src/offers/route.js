@@ -7,6 +7,9 @@ const InvalidParamError = require(`../error/invalid-param-error`);
 const offersGenerator = require(`../offers-generator`);
 const multer = require(`multer`);
 
+const ValidationError = require(`../error/validation-error`);
+const validate = require(`./validate`);
+
 const upload = multer({storage: multer.memoryStorage()});
 
 const offers = offersGenerator();
@@ -40,8 +43,15 @@ offersRouter.get(`/:date`, (req, res) => {
 });
 
 offersRouter.post(``, upload.none(), (req, res) => {
-  const body = req.body;
-  res.send(body);
+  const body = {...req.body};
+  res.send(validate(body));
+});
+
+offersRouter.use((err, req, res, next) => {
+  if (err instanceof ValidationError) {
+    return res.status(err.code).json(err.errors);
+  }
+  return next();
 });
 
 module.exports = offersRouter;
