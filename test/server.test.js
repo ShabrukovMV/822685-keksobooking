@@ -27,7 +27,7 @@ describe(`Методы GET /api/offer`, () => {
 
   it(`Метод GET api/offers/:date должен отдавать правильный объект JSON с кодом 200`, async () => {
     const response = await request(app)
-      .get(`/api/offers/1539216000`)
+      .get(`/api/offers/1539561600`)
       .set(`Accept`, `application/json`)
       .expect(200)
       .expect(`Content-Type`, /json/);

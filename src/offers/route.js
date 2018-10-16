@@ -51,6 +51,9 @@ offersRouter.use((err, req, res, next) => {
   if (err instanceof ValidationError) {
     return res.status(err.code).json(err.errors);
   }
+  if (err instanceof InvalidParamError) {
+    return res.status(err.code).send(err.message);
+  }
   return next();
 });
 
