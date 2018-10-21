@@ -11,6 +11,7 @@ const validate = require(`./validate`);
 const ValidationError = require(`../error/validation-error`);
 const toStream = require(`buffer-to-stream`);
 
+const jsonParser = express.json();
 const upload = multer({storage: multer.memoryStorage()});
 
 const asyncMW = (fn) => (req, res, next) => fn(req, res, next).catch(next);
@@ -72,7 +73,7 @@ offersRouter.get(`/:date/avatar`, asyncMW(async (req, res) => {
   stream.pipe(res);
 }));
 
-offersRouter.post(``, upload.single(`avatar`), asyncMW(async (req, res) => {
+offersRouter.post(``, jsonParser, upload.single(`avatar`), asyncMW(async (req, res) => {
   const body = {...req.body};
   const avatar = req.file;
   if (avatar) {
@@ -93,7 +94,6 @@ offersRouter.post(``, upload.single(`avatar`), asyncMW(async (req, res) => {
 }));
 
 offersRouter.use((err, req, res, next) => {
-  console.log(`-->`, err.message, `<--`);
   if (err instanceof ValidationError) {
     return res.status(err.code).json(err.errors);
   }
@@ -103,6 +103,7 @@ offersRouter.use((err, req, res, next) => {
   if (err instanceof InvalidParamError) {
     return res.status(err.code).send(err.message);
   }
+  console.log(`-->`, err.message, `<--`);
   return next();
 });
 

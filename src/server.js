@@ -9,8 +9,6 @@ const imageStore = require(`./images/store`);
 const offersRouter = require(`./offers/route`)(offerStore, imageStore);
 const app = express();
 
-const jsonParser = express.json();
-
 const hostname = `127.0.0.1`;
 const staticDir = `${__dirname}/../static`;
 
@@ -31,7 +29,7 @@ const ERROR_HANDLER = (err, req, res, next) => {
   }
 };
 
-app.use(jsonParser, LOG_HANDLER);
+app.use(LOG_HANDLER);
 
 app.use(express.static(staticDir));
 

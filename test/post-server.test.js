@@ -2,8 +2,10 @@
 
 const assert = require(`assert`);
 const request = require(`supertest`);
-const {app} = require(`../src/server`);
 const testOffer = require(`./fixtures/test-offer`);
+
+const express = require(`express`);
+const app = express();
 
 const offerStoreMock = require(`./mock/store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
@@ -40,7 +42,6 @@ describe(`Методы POST api/offers`, () => {
   });
 
   it(`Метод POST /api/offers должен получить файл из формы без ошибок`, async () => {
-    console.log(`Метод POST /api/offers начался`);
     const response = await request(app)
       .post(`/api/offers`)
       .field(`author`, ``)
