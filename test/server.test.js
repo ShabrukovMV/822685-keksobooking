@@ -12,6 +12,10 @@ const offersRouter = require(`../src/offers/route`)(offerStoreMock, imageStoreMo
 
 app.use(`/api/offers`, offersRouter);
 
+app.use((req, res) => {
+  res.status(404).send(`Страница ${req.path} не найдена!`);
+});
+
 describe(`Методы GET /api/offer`, () => {
 
   it(`Метод GET /api/offers должен отдавать правильный объект JSON с кодом 200`, async () => {
