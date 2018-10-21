@@ -2,12 +2,15 @@
 
 const assert = require(`assert`);
 const request = require(`supertest`);
-const {app} = require(`../src/server`);
+const express = require(`express`);
+const app = express();
 
 const offerStoreMock = require(`./mock/store-mock`);
-const offerRoute = require(`../src/offers/route`)(offerStoreMock);
+const imageStoreMock = require(`./mock/image-store-mock`);
 
-app.use(`/api/offers`, offerRoute);
+const offersRouter = require(`../src/offers/route`)(offerStoreMock, imageStoreMock);
+
+app.use(`/api/offers`, offersRouter);
 
 describe(`Методы GET /api/offer`, () => {
 

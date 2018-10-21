@@ -6,14 +6,15 @@ const express = require(`express`);
 const offerStore = require(`./offers/store`);
 const imageStore = require(`./images/store`);
 
-const offersRouter = require(`./offers/route`)(offerStore, imageStore);
 const app = express();
+
+const offersRouter = require(`./offers/route`)(offerStore, imageStore);
 
 const hostname = `127.0.0.1`;
 const staticDir = `${__dirname}/../static`;
 
 const LOG_HANDLER = (req, res, next) => {
-  console.log(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}, тело запроса: ${JSON.stringify(req.body)}`);
+  console.log(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}`);
   next();
 };
 
@@ -54,5 +55,3 @@ module.exports = {
     launchServer(port);
   },
 };
-
-module.exports.app = app;
