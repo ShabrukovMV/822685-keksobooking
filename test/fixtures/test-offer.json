@@ -7,7 +7,7 @@
     "address": "588,235",
     "price": 222245,
     "type": "bungalo",
-    "rooms": 3,
+    "rooms": 1,
     "guests": 5,
     "checkin": "13:00",
     "checkout": "14:00",
@@ -27,5 +27,5 @@
     "x": 588,
     "y": 235
   },
-  "date": 1539302400
+  "date": 1540080000
 }

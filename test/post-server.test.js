@@ -5,6 +5,13 @@ const request = require(`supertest`);
 const {app} = require(`../src/server`);
 const testOffer = require(`./fixtures/test-offer`);
 
+const offerStoreMock = require(`./mock/store-mock`);
+const imageStoreMock = require(`./mock/image-store-mock`);
+
+const offersRouter = require(`../src/offers/route`)(offerStoreMock, imageStoreMock);
+
+app.use(`/api/offers`, offersRouter);
+
 describe(`Методы POST api/offers`, () => {
 
   it(`Метод POST /api/offers должен отправлять параметры в JSON и получать правильный объект JSON с кодом 200`, async () => {
@@ -16,7 +23,7 @@ describe(`Методы POST api/offers`, () => {
       .expect(200)
       .expect(`Content-Type`, /json/);
     const offers = response.body;
-    assert.deepStrictEqual(offers, sentParams, `Получили, что отправили`);
+    assert.deepEqual(offers, sentParams, `Получили, что отправили`);
   });
 
   it(`Метод POST /api/offers должен выдавать код 400 при ошибке валидации`, async () => {
@@ -32,11 +39,24 @@ describe(`Методы POST api/offers`, () => {
     assert(offers.length > 0, `Тело ошибки не может быть пустым`);
   });
 
-  it(`Метод POST /api/offers должен выдавать код 400 при ошибке валидации приполучении данных с формы`, async () => {
+  it(`Метод POST /api/offers должен получить файл из формы без ошибок`, async () => {
+    console.log(`Метод POST /api/offers начался`);
     const response = await request(app)
       .post(`/api/offers`)
-      .field(`location`, 10)
-      .field(`date`, 100)
+      .field(`author`, ``)
+      .field(`date`, 1539475200)
+      .attach(`avatar`, `./test/fixtures/avatar.png`)
+      .set(`Accept`, `multipart/form-data`)
+      .expect(200)
+      .expect(`Content-Type`, /json/);
+    const offers = response.body;
+    assert.deepEqual(offers.author.avatar, `avatar.png`, `Получили тестовый файл`);
+  });
+
+
+  it(`Метод POST /api/offers должен выдавать код 400 при ошибке валидации при получении данных с формы`, async () => {
+    const response = await request(app)
+      .post(`/api/offers`)
       .field(`author`, `Michael`)
       .field(`offer`, ``)
       .set(`Accept`, `multipart/form-data`)

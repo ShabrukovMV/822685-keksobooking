@@ -4,6 +4,11 @@ const assert = require(`assert`);
 const request = require(`supertest`);
 const {app} = require(`../src/server`);
 
+const offerStoreMock = require(`./mock/store-mock`);
+const offerRoute = require(`../src/offers/route`)(offerStoreMock);
+
+app.use(`/api/offers`, offerRoute);
+
 describe(`Методы GET /api/offer`, () => {
 
   it(`Метод GET /api/offers должен отдавать правильный объект JSON с кодом 200`, async () => {
@@ -16,6 +21,16 @@ describe(`Методы GET /api/offer`, () => {
     assert.strictEqual(offers.length, 20, `Длина полученного массива должна быть равна 20`);
     assert.strictEqual(!offers[0].author, false, `Первый элемент должен содержать поле "author"`);
     assert.strictEqual(typeof offers[0].author, `object`, `Поле "author" должно быть объектом`);
+  });
+
+  it(`Метод GET /api/offers?limit=30&skip=5 должен отдавать правильный объект JSON с кодом 200 длиной 30`, async () => {
+    const response = await request(app)
+      .get(`/api/offers?limit=30&skip=5`)
+      .set(`Accept`, `application/json`)
+      .expect(200)
+      .expect(`Content-Type`, /json/);
+    const offers = response.body;
+    assert.strictEqual(offers.length, 30, `Длина полученного массива должна быть равна 20`);
   });
 
   it(`Отрицательная проверка GET /api/offers`, async () => {

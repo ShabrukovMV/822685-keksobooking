@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require(`fs`);
-const generateEntity = require(`./generate`);
+const generateEntity = require(`../test/generator/generate`);
 
 const fileWriteOptions = {encoding: `utf-8`, mode: 0o644};
 

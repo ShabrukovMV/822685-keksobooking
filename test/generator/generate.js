@@ -1,6 +1,6 @@
 'use strict';
 
-const conditions = require(`../src/generate-conditions`);
+const conditions = require(`./generate-conditions`);
 
 const genRndNumInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);

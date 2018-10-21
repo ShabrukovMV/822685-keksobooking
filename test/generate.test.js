@@ -3,8 +3,8 @@
 const assert = require(`assert`);
 const fs = require(`fs`);
 const {promisify} = require(`util`);
-const generateEntity = require(`../src/generate`);
-const conditions = require(`../src/generate-conditions`);
+const generateEntity = require(`./generator/generate`);
+const conditions = require(`./generator/generate-conditions`);
 const generateToFile = require(`../src/generate-to-file`);
 
 const fsaccess = promisify(fs.access);

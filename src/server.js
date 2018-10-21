@@ -3,7 +3,10 @@
 const packageInfo = require(`../package.json`);
 
 const express = require(`express`);
-const offersRouter = require(`./offers/route`);
+const offerStore = require(`./offers/store`);
+const imageStore = require(`./images/store`);
+
+const offersRouter = require(`./offers/route`)(offerStore, imageStore);
 const app = express();
 
 const jsonParser = express.json();
