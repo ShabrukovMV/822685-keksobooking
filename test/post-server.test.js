@@ -45,7 +45,7 @@ describe(`Методы POST api/offers`, () => {
     const response = await request(app)
       .post(`/api/offers`)
       .field(`author`, ``)
-      .field(`date`, 1539475200)
+      .field(`date`, new Date().setUTCHours(0, 0, 0, 0) / 1000)
       .attach(`avatar`, `./test/fixtures/avatar.png`)
       .set(`Accept`, `multipart/form-data`)
       .expect(200)
