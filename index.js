@@ -1,6 +1,7 @@
 'use strict';
 
 require(`colors`);
+require(`dotenv`).config();
 
 const commandHandler = require(`./src/load-commands`);
 const wrong = require(`./src/wrong`);

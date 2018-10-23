@@ -5,12 +5,15 @@ const packageInfo = require(`../package.json`);
 const express = require(`express`);
 const offerStore = require(`./offers/store`);
 const imageStore = require(`./images/store`);
+const offersRouter = require(`./offers/route`)(offerStore, imageStore);
 
 const app = express();
 
-const offersRouter = require(`./offers/route`)(offerStore, imageStore);
+const {
+  SERVER_HOST = `localhost`,
+  SERVER_PORT = 3000,
+} = process.env;
 
-const hostname = `127.0.0.1`;
 const staticDir = `${__dirname}/../static`;
 
 const LOG_HANDLER = (req, res, next) => {
@@ -40,18 +43,17 @@ app.use(NOT_FOUND_HANDLER);
 
 app.use(ERROR_HANDLER);
 
-const launchServer = (port) => {
+const launchServer = ({host, port}) => {
   port = parseInt(port, 10);
-  port = port ? port : 3000;
-  app.listen(port, hostname, () => {
-    console.log(`Сервер ${`«${packageInfo.name}»`.green.bold} запущен по адресу: http://${hostname}:${port}`);
+  app.listen(port, host, () => {
+    console.log(`Сервер ${`«${packageInfo.name}»`.green.bold} запущен по адресу: http://${host}:${port}`);
   });
 };
 
 module.exports = {
   name: `server`,
   description: `Запускает сервер «${packageInfo.name}».`,
-  execute(port = 3000) {
-    launchServer(port);
+  execute(port = SERVER_PORT, host = SERVER_HOST) {
+    launchServer({host, port});
   },
 };
