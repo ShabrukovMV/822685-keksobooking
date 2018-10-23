@@ -1,5 +1,7 @@
 'use strict';
 
+const logger = require(`../logger`);
+
 const express = require(`express`);
 const offersRouter = express.Router(); // eslint-disable-line new-cap
 const multer = require(`multer`);
@@ -17,16 +19,16 @@ const upload = multer({storage: multer.memoryStorage()});
 const asyncMW = (fn) => (req, res, next) => fn(req, res, next).catch(next);
 
 offersRouter.get(``, asyncMW(async (req, res) => {
-  const query = req.query;
-  let limit = 20;
-  let skip = 0;
-  if (query.hasOwnProperty(`skip`)) {
-    skip = parseInt(query.skip, 10) ? parseInt(query.skip, 10) : skip;
+  const {limit = 20, skip = 0} = req.query;
+
+  if (isNaN(parseInt(skip, 10))) {
+    throw new InvalidParamError(`Недопустимое значение параметра skip {${skip}}`);
   }
-  if (query.hasOwnProperty(`limit`)) {
-    limit = parseInt(query.limit, 10) ? parseInt(query.limit, 10) : limit;
+
+  if (isNaN(parseInt(limit, 10))) {
+    throw new InvalidParamError(`Недопустимое значение параметра limit {${limit}}`);
   }
-  res.send(await offersRouter.offerStore.getOffersBySkipAndLimit(skip, limit));
+  res.send(await offersRouter.offerStore.getOffersBySkipAndLimit(parseInt(skip, 10), parseInt(limit, 10)));
 }));
 
 offersRouter.get(`/:date`, asyncMW(async (req, res) => {
@@ -65,16 +67,17 @@ offersRouter.get(`/:date/avatar`, asyncMW(async (req, res) => {
   res.header(`Content-Type`, `image/png`);
   res.header(`Content-Length`, result.info.length);
 
-  res.on(`error`, (err) => console.error(err));
+  res.on(`error`, (err) => logger.error(err));
   res.on(`end`, () => res.end());
   const stream = result.stream;
-  stream.on(`error`, (err) => console.error(err));
+  stream.on(`error`, (err) => logger.error(err));
   stream.on(`end`, () => res.end());
   stream.pipe(res);
 }));
 
 offersRouter.post(``, jsonParser, upload.single(`avatar`), asyncMW(async (req, res) => {
   const body = {...req.body};
+  logger.verbose(`Тело запроса: ${JSON.stringify(body)}`);
   const avatar = req.file;
   if (avatar) {
     body.author = {avatar: avatar.originalname};
@@ -103,7 +106,7 @@ offersRouter.use((err, req, res, next) => {
   if (err instanceof InvalidParamError) {
     return res.status(err.code).send(err.message);
   }
-  console.log(`-->`, err.message, `<--`);
+  logger.warn(`Необработанная ошибка ${err.message}`);
   return next();
 });
 

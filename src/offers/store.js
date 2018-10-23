@@ -1,5 +1,6 @@
 'use strict';
 
+const logger = require(`../logger`);
 const dBase = require(`../database/db`);
 
 const setupCollection = async () => {
@@ -28,4 +29,4 @@ class OfferStore {
   }
 }
 
-module.exports = new OfferStore(setupCollection().catch((e) => console.error(`Не удалось настроить коллекцию offers`, e.message)));
+module.exports = new OfferStore(setupCollection().catch((e) => logger.error(`Не удалось настроить коллекцию offers`, e.message)));

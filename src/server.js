@@ -1,6 +1,7 @@
 'use strict';
 
 const packageInfo = require(`../package.json`);
+const logger = require(`./logger`);
 
 const express = require(`express`);
 const offerStore = require(`./offers/store`);
@@ -17,7 +18,7 @@ const {
 const staticDir = `${__dirname}/../static`;
 
 const LOG_HANDLER = (req, res, next) => {
-  console.log(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}`);
+  logger.verbose(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}`);
   next();
 };
 
@@ -27,11 +28,19 @@ const NOT_FOUND_HANDLER = (req, res) => {
 
 const ERROR_HANDLER = (err, req, res, next) => {
   if (err) {
-    console.log(`Ошибка ${err.code}: ${err.message}`);
+    logger.error(`Ошибка ${err.code}: ${err.message}`);
     res.status(err.code || 500).send(err.message);
     next();
   }
 };
+
+const CORS_HANDLER = (req, res, next) => {
+  res.header(`Access-Control-Allow-Origin`, `*`);
+  res.header(`Access-Control-Allow-Headers`, `Origin, X-Requested-With, Content-Type, Accept`);
+  next();
+};
+
+app.use(CORS_HANDLER);
 
 app.use(LOG_HANDLER);
 
@@ -46,7 +55,7 @@ app.use(ERROR_HANDLER);
 const launchServer = ({host, port}) => {
   port = parseInt(port, 10);
   app.listen(port, host, () => {
-    console.log(`Сервер ${`«${packageInfo.name}»`.green.bold} запущен по адресу: http://${host}:${port}`);
+    logger.info(`Сервер ${`«${packageInfo.name}»`.green.bold} запущен по адресу: http://${host}:${port}`);
   });
 };
 
