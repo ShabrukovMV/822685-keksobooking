@@ -3,9 +3,9 @@
 require(`colors`);
 require(`dotenv`).config();
 
-const commandHandler = require(`./src/load-commands`);
-const wrong = require(`./src/wrong`);
-const empty = require(`./src/empty`);
+const commandHandler = require(`./src/console/load-commands`);
+const wrong = require(`./src/console/wrong`);
+const empty = require(`./src/console/empty`);
 
 const availableCommands = Object.keys(commandHandler);
 

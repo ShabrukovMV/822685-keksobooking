@@ -1,6 +1,6 @@
 'use strict';
 
-const packageInfo = require(`../package.json`);
+const packageInfo = require(`../../package`);
 
 const versionColors = [`red`, `green`, `blue`];
 const versionNumbers = packageInfo.version.split(`.`);

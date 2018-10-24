@@ -5,7 +5,7 @@ const fs = require(`fs`);
 const {promisify} = require(`util`);
 const generateEntity = require(`./generator/generate`);
 const conditions = require(`./generator/generate-conditions`);
-const generateToFile = require(`../src/generate-to-file`);
+const generateToFile = require(`../src/console/generate-to-file`);
 
 const fsaccess = promisify(fs.access);
 const fsunlink = promisify(fs.unlink);

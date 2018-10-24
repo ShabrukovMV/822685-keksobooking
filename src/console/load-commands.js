@@ -4,7 +4,7 @@ const author = require(`./author`);
 const description = require(`./description`);
 const license = require(`./license`);
 const version = require(`./version`);
-const server = require(`./server`);
+const server = require(`../../src/server`);
 
 const help = require(`./help`);
 

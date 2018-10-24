@@ -37,7 +37,7 @@ describe(`Методы GET /api/offer`, () => {
       .expect(200)
       .expect(`Content-Type`, /json/);
     const offers = response.body;
-    assert.strictEqual(offers.length, 30, `Длина полученного массива должна быть равна 20`);
+    assert.strictEqual(offers.length, 30, `Длина полученного массива должна быть равна 30`);
   });
 
   it(`Отрицательная проверка GET /api/offers`, async () => {
@@ -49,7 +49,7 @@ describe(`Методы GET /api/offer`, () => {
 
   it(`Метод GET api/offers/:date должен отдавать правильный объект JSON с кодом 200`, async () => {
     const response = await request(app)
-      .get(`/api/offers/1539734400`)
+      .get(`/api/offers/${new Date().setUTCHours(0, 0, 0, 0) / 1000}`)
       .set(`Accept`, `application/json`)
       .expect(200)
       .expect(`Content-Type`, /json/);

@@ -106,7 +106,10 @@ offersRouter.use((err, req, res, next) => {
   if (err instanceof InvalidParamError) {
     return res.status(err.code).send(err.message);
   }
-  logger.warn(`Необработанная ошибка ${err.message}`);
+  if (err.name === `MongoError`) {
+    logger.error(`Ошибка MongoDB: ${err.message}`);
+    return res.status(400).send(err.message);
+  }
   return next();
 });
 
