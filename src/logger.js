@@ -2,12 +2,13 @@
 
 const {createLogger, format, transports} = require(`winston`);
 const {combine, timestamp} = format;
+const {SERVER_LOG_LEVEL = `INFO`} = process.env;
 
 const logger = createLogger({
-  level: `info`,
-  format: format.json(),
+  level: SERVER_LOG_LEVEL,
+  format: combine(timestamp(), format.json()),
   transports: [
-    new transports.File({filename: `error.log`, level: `error`}),
+    new transports.File({filename: `error.log`, level: `warn`}),
     new transports.File({filename: `combined.log`}),
   ],
 });
