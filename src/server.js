@@ -17,32 +17,33 @@ const {
 
 const staticDir = `${__dirname}/../static`;
 
-const LOG_HANDLER = (req, res, next) => {
-  logger.verbose(`Пришёл запрос ${req.method}: ${req.path}, параметры: ${JSON.stringify(req.query)}`);
-  next();
-};
-
-const NOT_FOUND_HANDLER = (req, res) => {
-  res.status(404).send(`Страница ${req.path} не найдена!`);
-};
-
-const ERROR_HANDLER = (err, req, res, next) => {
-  if (err) {
-    logger.error(`Ошибка ${err.code}: ${err.message}`);
-    res.status(err.code || 500).send(err.message);
-    next();
-  }
-};
-
 const CORS_HANDLER = (req, res, next) => {
   res.header(`Access-Control-Allow-Origin`, `*`);
   res.header(`Access-Control-Allow-Headers`, `Origin, X-Requested-With, Content-Type, Accept`);
   next();
 };
 
+const LOG_REQUEST_HANDLER = (req, res, next) => {
+  logger.verbose(`Пришёл запрос ${req.method}: ${req.path}`);
+  next();
+};
+
+const NOT_FOUND_HANDLER = (req, res) => {
+  logger.warn(`Запрашиваемая страница ${req.path} не найдена`);
+  res.status(404).send(`Страница ${req.path} не найдена!`);
+};
+
+const ERROR_HANDLER = (err, req, res, next) => {
+  if (err) {
+    logger.error(`Внутренняя ошибка сервера ${err.code}: ${err.message}`);
+    res.status(err.code || 500).send(err.message);
+    next();
+  }
+};
+
 app.use(CORS_HANDLER);
 
-app.use(LOG_HANDLER);
+app.use(LOG_REQUEST_HANDLER);
 
 app.use(express.static(staticDir));
 
