@@ -19,14 +19,14 @@ module.exports = {
 
     const stageHandler = new ReadLineStages(rl);
 
-    rl.on(`line`, (line) => {
-      stageHandler.execute(line, rl);
-    }).on(`close`, () => {
-      console.log(`Всего хорошего!`);
-      process.exit(0);
-    }).on(`error`, () => {
-      console.log(`Ошибка!`);
-      process.exit(1);
-    });
+    rl.on(`line`, (line) => stageHandler.execute(line))
+      .on(`close`, () => {
+        console.log(`Всего хорошего!`);
+        process.exit();
+      })
+      .on(`error`, () => {
+        console.log(`Ошибка!`);
+        process.exit(1);
+      });
   },
 };

@@ -1,6 +1,5 @@
 'use strict';
 
-
 const fs = require(`fs`);
 const {promisify} = require(`util`);
 const generateToFile = require(`./generate-to-file`);
@@ -10,34 +9,35 @@ class ReadLineStages {
   constructor(rl) {
     this.numberElements = 0;
     this.fileName = ``;
-    this.stage = `askGenData`;
-    rl.setPrompt(`Хотите сгенерировать данные? ${`(y/n)`.green.bold} `);
+    this.stage = this.askGenData;
+    this.rl = rl;
+    this.rl.setPrompt(`Хотите сгенерировать данные? ${`(y/n)`.green.bold} `);
     rl.prompt();
   }
 
-  askGenData(line, rl) {
+  askGenData(line) {
     if (line === `y`) {
-      rl.setPrompt(`Какоe количество элементов нужно сгенерировать? ${`(1..10, 0 - выход)`.green.bold} `);
-      this.stage = `askNumData`;
+      this.rl.setPrompt(`Какоe количество элементов нужно сгенерировать? ${`(1..10, 0 - выход)`.green.bold} `);
+      this.stage = this.askNumData;
     } else if (line === `n`) {
-      rl.close();
+      this.rl.close();
     }
-    rl.prompt();
+    this.rl.prompt();
   }
 
-  askNumData(line, rl) {
+  askNumData(line) {
     this.numberElements = parseInt(line, 10);
     if (this.numberElements >= 1 && this.numberElements <= 10) {
-      rl.setPrompt(`Задайте путь до файла в котором необходимо сохранить данные: `);
-      this.stage = `askFileName`;
+      this.rl.setPrompt(`Задайте путь до файла в котором необходимо сохранить данные: `);
+      this.stage = this.askFileName;
     } else if (this.numberElements === 0) {
       console.log(`Вы задали нулевое кол-во элементов!`);
-      rl.close();
+      this.rl.close();
     }
-    rl.prompt();
+    this.rl.prompt();
   }
 
-  async askFileName(line, rl) {
+  async askFileName(line) {
     this.fileName = line;
     try {
       const stats = await fsstat(this.fileName);
@@ -45,42 +45,42 @@ class ReadLineStages {
         console.log(`Ошибка: путь ${this.fileName} является папкой!`);
       }
       if (stats.isFile()) {
-        this.stage = `fileExists`;
-        rl.setPrompt(`Такой файл (${this.fileName}) уже существует, перезаписать данные? ${`(y/n) `.green.bold} `);
+        this.stage = this.fileExists;
+        this.rl.setPrompt(`Такой файл (${this.fileName}) уже существует, перезаписать данные? ${`(y/n) `.green.bold} `);
       }
-      rl.prompt();
+      this.rl.prompt();
     } catch (e) {
       try {
         await generateToFile.execute(this.fileName, this.numberElements);
         console.log(`Данные сгенерированы успешно!`);
-        rl.close();
+        this.rl.close();
       } catch (errGenerateToFile) {
         console.log(`Ошибка записи файла: ${errGenerateToFile.code}`);
-        rl.prompt();
+        this.rl.prompt();
       }
     }
   }
 
-  async fileExists(line, rl) {
+  async fileExists(line) {
     if (line === `y`) {
       try {
         await generateToFile.execute(this.fileName, this.numberElements);
         console.log(`Данные успешно сгенерированы и перезаписаны!`);
-        rl.close();
+        this.rl.close();
       } catch (err) {
-        console.log(`Ошибка записи файла: ${err.code}`);
-        rl.prompt();
+        console.log(`Ошибка перезаписи файла: ${err.code}`);
+        this.rl.prompt();
       }
     } else if (line === `n`) {
       console.log(`Вы отказались от перезаписи данных!`);
-      rl.close();
+      this.rl.close();
     } else {
-      rl.prompt();
+      this.rl.prompt();
     }
   }
 
-  async execute(line, rl) {
-    this[this.stage](line, rl);
+  async execute(line) {
+    this.stage(line);
   }
 }
 
