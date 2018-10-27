@@ -39,6 +39,10 @@ class ValidationMethods {
     return this !== value;
   }
 
+  checkLengthString(min, max) {
+    return this.checkingValue.length >= min && this.checkingValue.length <= max;
+  }
+
   checkInterval(min, max) {
     return this.checkingValue >= min && this.checkingValue <= max;
   }

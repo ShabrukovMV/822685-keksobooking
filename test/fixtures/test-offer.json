@@ -3,9 +3,9 @@
     "avatar": "https://robohash.org/05uxsbw2mtuv"
   },
   "offer": {
-    "title": "Огромный прекрасный дворец",
+    "title": "Неуютное бунгало по колено в воде",
     "address": "588,235",
-    "price": 222245,
+    "price": 9999,
     "type": "bungalo",
     "rooms": 1,
     "guests": 5,
@@ -27,5 +27,5 @@
     "x": 588,
     "y": 235
   },
-  "date": 1540080000
+  "date": 1540634032
 }

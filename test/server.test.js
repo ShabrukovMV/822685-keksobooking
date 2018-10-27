@@ -9,11 +9,13 @@ const offerStoreMock = require(`./mock/store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
 
 const offersRouter = require(`../src/offers/route`)(offerStoreMock, imageStoreMock);
+const offersAvatarRouter = require(`../src/offers/route-avatar`)(offerStoreMock, imageStoreMock);
+const offersErrorRouter = require(`../src/offers/route-errors`);
 
-app.use(`/api/offers`, offersRouter);
+app.use(`/api/offers`, offersRouter, offersAvatarRouter, offersErrorRouter);
 
 app.use((req, res) => {
-  res.status(404).send(`Страница ${req.path} не найдена!`);
+  res.status(404).send([{error: `Not Found Error`, errorMessage: `Страница ${req.path} не найдена!`}]);
 });
 
 describe(`Методы GET /api/offer`, () => {
@@ -41,10 +43,12 @@ describe(`Методы GET /api/offer`, () => {
   });
 
   it(`Отрицательная проверка GET /api/offers`, async () => {
-    return await request(app).get(`/api/offersoffers`).set(`Accept`, `application/json`)
+    return await request(app)
+      .get(`/api/offersoffers`)
+      .set(`Accept`, `application/json`)
       .expect(404)
-      .expect(`Страница /api/offersoffers не найдена!`)
-      .expect(`Content-Type`, /html/);
+      .expect(`[{"error":"Not Found Error","errorMessage":"Страница /api/offersoffers не найдена!"}]`)
+      .expect(`Content-Type`, /json/);
   });
 
   it(`Метод GET api/offers/:date должен отдавать правильный объект JSON с кодом 200`, async () => {
@@ -61,7 +65,7 @@ describe(`Методы GET /api/offer`, () => {
     return await request(app).get(`/api/offers/invalid time`).set(`Accept`, `application/json`)
       .expect(400)
       .expect(/(Неверный формат даты {).+(})/)
-      .expect(`Content-Type`, /html/);
+      .expect(`Content-Type`, /json/);
   });
 
 });

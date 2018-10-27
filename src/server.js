@@ -4,9 +4,13 @@ const packageInfo = require(`../package.json`);
 const logger = require(`./logger`);
 
 const express = require(`express`);
+
 const offerStore = require(`./offers/store`);
 const imageStore = require(`./images/store`);
+
 const offersRouter = require(`./offers/route`)(offerStore, imageStore);
+const offersAvatarRouter = require(`./offers/route-avatar`)(offerStore, imageStore);
+const offersErrorRouter = require(`./offers/route-errors`);
 
 const app = express();
 
@@ -30,24 +34,24 @@ const LOG_REQUEST_HANDLER = (req, res, next) => {
 
 const NOT_FOUND_HANDLER = (req, res) => {
   logger.warn(`Запрашиваемая страница ${req.path} не найдена`);
-  res.status(404).send(`Страница ${req.path} не найдена!`);
+  res.status(404).send([{error: `Not Found Error`, errorMessage: `Страница ${req.path} не найдена!`}]);
 };
 
 const ERROR_HANDLER = (err, req, res, next) => {
   if (err) {
     logger.error(`Внутренняя ошибка сервера ${err.code}: ${err.message}`);
-    res.status(err.code || 500).send(err.message);
+    res.status(err.code || 500).send([{error: `Not Found Error`, errorMessage: err.message}]);
     next();
   }
 };
 
 app.use(CORS_HANDLER);
 
-app.use(LOG_REQUEST_HANDLER);
-
 app.use(express.static(staticDir));
 
-app.use(`/api/offers`, offersRouter);
+app.use(LOG_REQUEST_HANDLER);
+
+app.use(`/api/offers`, offersRouter, offersAvatarRouter, offersErrorRouter);
 
 app.use(NOT_FOUND_HANDLER);
 
@@ -67,3 +71,4 @@ module.exports = {
     launchServer({host, port});
   },
 };
+

@@ -27,6 +27,15 @@ class OfferStore {
   async putOffer(offerData) {
     return (await this.collection).insertOne(offerData);
   }
+
+  async deleteOffersByDate(date) {
+    return (await this.collection).deleteMany({date});
+  }
+
+  async putManyOffers(offerDataArray) {
+    return (await this.collection).insertMany(offerDataArray);
+  }
+
 }
 
 module.exports = new OfferStore(setupCollection().catch((e) => logger.error(`Не удалось настроить коллекцию offers`, e.message)));

@@ -5,6 +5,7 @@ const description = require(`./description`);
 const license = require(`./license`);
 const version = require(`./version`);
 const server = require(`../../src/server`);
+const fill = require(`./fill`);
 
 const help = require(`./help`);
 
@@ -15,4 +16,5 @@ module.exports = {
   '--version': version.execute,
   '--help': help.execute,
   '--server': server.execute,
+  '--fill': fill.execute,
 };

@@ -1,4 +1,17 @@
 {
+  "author": {
+    "name": {
+      "values": [
+        "Keks",
+        "Pavel",
+        "Nikolay",
+        "Alex",
+        "Ulyana",
+        "Anastasyia",
+        "Julia"
+      ]
+    }
+  },
   "offer": {
     "title": {
       "values": [

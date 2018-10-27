@@ -36,7 +36,7 @@ module.exports =
         },
         address: {
           typeOf: `string`,
-          checks: [{checkMethod: `checkRegExp`, args: [/^\d+,\d+$/], errmsg: `Поле "offer.address" не формата "x,y"`}],
+          checks: [{checkMethod: `checkRegExp`, args: [/^\d+.+,.+\d+$/], errmsg: `Поле "offer.address" не формата "x,y"`}],
         },
         price: {
           typeOf: `number`,
@@ -176,7 +176,7 @@ module.exports =
         {checkMethod: `checkInteger`, args: [], errmsg: `Поле "date" должно быть целочисленным`},
         {
           checkMethod: `checkInterval`,
-          args: [new Date().setUTCHours(0, 0, 0, 0) / 1000 - conditions.date.dayUNIX * conditions.date.daysBack, new Date().setUTCHours(0, 0, 0, 0) / 1000],
+          args: [new Date().setUTCHours(0, 0, 0, 0) / 1000 - conditions.date.dayUNIX * conditions.date.daysBack, new Date().setUTCHours(23, 59, 59, 999) / 1000],
           errmsg: `Дата должна быть в интервале [${new Date().setUTCHours(0, 0, 0, 0) / 1000 - conditions.date.dayUNIX * conditions.date.daysBack}..${new Date().setUTCHours(0, 0, 0, 0) / 1000}]`,
         }],
     },
