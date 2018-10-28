@@ -4,6 +4,7 @@ const packageInfo = require(`../../package`);
 
 const versionColors = [`red`, `green`, `blue`];
 const versionNumbers = packageInfo.version.split(`.`);
+
 versionNumbers.forEach((item, index, array) => {
   array[index] = `${item[versionColors[index]]}`;
 });
