@@ -2,13 +2,8 @@
 
 const packageInfo = require(`../../package`);
 
-const versionColors = [`red`, `green`, `blue`];
-const versionNumbers = packageInfo.version.split(`.`);
-
-versionNumbers.forEach((item, index, array) => {
-  array[index] = `${item[versionColors[index]]}`;
-});
-const colorVersion = `${versionNumbers}`.replace(/,/g, `.`);
+const [majorVersion, minorVersion, patchVersion] = packageInfo.version.split(`.`);
+const colorVersion = `${majorVersion.red}.${minorVersion.green}.${patchVersion.blue}`;
 
 module.exports = {
   name: `version`,

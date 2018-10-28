@@ -15,7 +15,7 @@ class OfferStoreMock {
     return this.data.slice(skip, skip + limit);
   }
 
-  putOffer(offerData) {
+  static putOffer(offerData) {
     return offerData;
   }
 }
