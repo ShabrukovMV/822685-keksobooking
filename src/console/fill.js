@@ -5,6 +5,7 @@ const readline = require(`readline`);
 const author = require(`./author`);
 const packageInfo = require(`../../package`);
 const generateEntity = require(`../../test/generator/generate`);
+const offerStore = require(`../offers/store`);
 
 const validate = require(`../offers/validate`);
 const validationScheme = require(`../offers/validation-scheme`);
@@ -13,7 +14,6 @@ module.exports = {
   name: `fill`,
   description: `Заполняет базу данных тестовыми данными`,
   async execute() {
-    const offerStore = require(`../offers/store`);
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
