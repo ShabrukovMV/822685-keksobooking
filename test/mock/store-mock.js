@@ -15,8 +15,10 @@ class OfferStoreMock {
     return this.data.slice(skip, skip + limit);
   }
 
-  static putOffer(offerData) {
-    return offerData;
+  putOffer() {
+    return {
+      insertedId: 123,
+    };
   }
 }
 

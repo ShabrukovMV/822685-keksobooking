@@ -48,6 +48,7 @@ const prepareOffer = (offerData, avatar) => {
 };
 
 module.exports = (offersRouter) => {
+
   offersRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
     const offerDate = req.params.date;
 
