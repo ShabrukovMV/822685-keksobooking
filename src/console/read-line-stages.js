@@ -9,27 +9,27 @@ class ReadLineStages {
   constructor(rl) {
     this.numberElements = 0;
     this.fileName = ``;
-    this.stage = this.askGenData;
+    this.stage = this.askToGenerateData;
     this.rl = rl;
     this.rl.setPrompt(`Хотите сгенерировать данные? ${`(y/n)`.green.bold} `);
     rl.prompt();
   }
 
-  askGenData(line) {
+  askToGenerateData(line) {
     if (line === `y`) {
       this.rl.setPrompt(`Какоe количество элементов нужно сгенерировать? ${`(1..10, 0 - выход)`.green.bold} `);
-      this.stage = this.askNumData;
+      this.stage = this.askForNumberData;
     } else if (line === `n`) {
       this.rl.close();
     }
     this.rl.prompt();
   }
 
-  askNumData(line) {
+  askForNumberData(line) {
     this.numberElements = parseInt(line, 10);
     if (this.numberElements >= 1 && this.numberElements <= 10) {
       this.rl.setPrompt(`Задайте путь до файла в котором необходимо сохранить данные: `);
-      this.stage = this.askFileName;
+      this.stage = this.askForFileName;
     } else if (this.numberElements === 0) {
       console.log(`Вы задали нулевое кол-во элементов!`);
       this.rl.close();
@@ -37,7 +37,7 @@ class ReadLineStages {
     this.rl.prompt();
   }
 
-  async askFileName(line) {
+  async askForFileName(line) {
     this.fileName = line;
     try {
       const stats = await fsstat(this.fileName);
@@ -45,7 +45,7 @@ class ReadLineStages {
         console.log(`Ошибка: путь ${this.fileName} является папкой!`);
       }
       if (stats.isFile()) {
-        this.stage = this.fileExists;
+        this.stage = this.askForOverwriteFile;
         this.rl.setPrompt(`Такой файл (${this.fileName}) уже существует, перезаписать данные? ${`(y/n) `.green.bold} `);
       }
       this.rl.prompt();
@@ -61,7 +61,7 @@ class ReadLineStages {
     }
   }
 
-  async fileExists(line) {
+  async askForOverwriteFile(line) {
     if (line === `y`) {
       try {
         await generateToFile(this.fileName, this.numberElements);
