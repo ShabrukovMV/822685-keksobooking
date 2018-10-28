@@ -8,7 +8,7 @@ const ValidationError = require(`../error/validation-error`);
 
 module.exports = (err, req, res, next) => {
   if (err instanceof ValidationError) {
-    logger.error(err.errors);
+    logger.error(JSON.stringify(err.errors));
     return res.status(err.code).send(err.errors);
   }
   if (err instanceof NotFoundError) {

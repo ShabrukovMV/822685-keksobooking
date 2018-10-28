@@ -24,6 +24,12 @@ const prepareOffer = (offerData, avatar) => {
   if (!offerData.hasOwnProperty(`offer`)) {
     const date = Math.floor(new Date() / 1000);
     const [x, y] = offerData.address ? offerData.address.match(/\d+/g) : [undefined, undefined];
+    if (!offerData.hasOwnProperty(`photos`)) {
+      offerData.photos = [];
+    }
+    if (offerData.hasOwnProperty(`features`) && !Array.isArray(offerData.features)) {
+      offerData.features = [offerData.features];
+    }
     offerData = {
       author: {
         name: offerData.name ? offerData.name : names[Math.floor(Math.random() * names.length)],
