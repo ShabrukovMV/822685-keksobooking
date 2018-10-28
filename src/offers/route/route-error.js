@@ -1,12 +1,12 @@
 'use strict';
 
-const logger = require(`../logger`);
+const logger = require(`../../logger`);
 
-const NotFoundError = require(`../error/not-found-error`);
-const InvalidParamError = require(`../error/invalid-param-error`);
-const ValidationError = require(`../error/validation-error`);
+const NotFoundError = require(`../../error/not-found-error`);
+const InvalidParamError = require(`../../error/invalid-param-error`);
+const ValidationError = require(`../../error/validation-error`);
 
-module.exports = (err, req, res, next) => {
+const OFFERS_ROUTE_ERRORS = (err, req, res, next) => {
   if (err instanceof ValidationError) {
     logger.error(`Ошибка валидации: ${JSON.stringify(err.errors)}`);
     return res.status(err.code).send(err.errors);
@@ -26,3 +26,9 @@ module.exports = (err, req, res, next) => {
   logger.error(`Необработанная ошибка: ${err.message}`);
   return next();
 };
+
+module.exports = (offersRouter) => {
+  offersRouter.use(OFFERS_ROUTE_ERRORS);
+};
+
+

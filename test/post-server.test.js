@@ -10,11 +10,9 @@ const app = express();
 const offerStoreMock = require(`./mock/store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
 
-const offersRouter = require(`../src/offers/route`)(offerStoreMock, imageStoreMock);
-const offersAvatarRouter = require(`../src/offers/route-avatar`)(offerStoreMock, imageStoreMock);
-const offersErrorRouter = require(`../src/offers/route-errors`);
+const offersRouter = require(`../src/offers/route/indexroute`)(offerStoreMock, imageStoreMock);
 
-app.use(`/api/offers`, offersRouter, offersAvatarRouter, offersErrorRouter);
+app.use(`/api/offers`, offersRouter);
 
 describe(`Методы POST api/offers`, () => {
 
