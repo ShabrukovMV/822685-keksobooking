@@ -2,7 +2,7 @@
 
 const conditions = require(`./generate-conditions`);
 
-const genRndNumInterval = (min, max) => {
+const generateRandomNumberInInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 const shuffleArray = (array) => {
@@ -14,8 +14,8 @@ const shuffleArray = (array) => {
 
 const generateEntity = () => {
   const location = {
-    "x": genRndNumInterval(conditions.location.x.min, conditions.location.x.max),
-    "y": genRndNumInterval(conditions.location.y.min, conditions.location.y.max),
+    "x": generateRandomNumberInInterval(conditions.location.x.min, conditions.location.x.max),
+    "y": generateRandomNumberInInterval(conditions.location.y.min, conditions.location.y.max),
   };
   let features = [...conditions.offer.features.values];
   let photos = [...conditions.offer.photos.values];
@@ -28,15 +28,15 @@ const generateEntity = () => {
     },
     "offer":
       {
-        "title": conditions.offer.title.values[genRndNumInterval(0, conditions.offer.title.values.length - 1)],
+        "title": conditions.offer.title.values[generateRandomNumberInInterval(0, conditions.offer.title.values.length - 1)],
         "address": `${location.x},${location.y}`,
-        "price": genRndNumInterval(conditions.offer.price.min, conditions.offer.price.max),
-        "type": conditions.offer.type.values[genRndNumInterval(0, conditions.offer.type.values.length - 1)],
-        "rooms": genRndNumInterval(conditions.offer.rooms.min, conditions.offer.rooms.max),
-        "guests": genRndNumInterval(conditions.offer.guests.min, conditions.offer.guests.min + 10),
-        "checkin": conditions.offer.checkin.values[genRndNumInterval(0, conditions.offer.checkin.values.length - 1)],
-        "checkout": conditions.offer.checkout.values[genRndNumInterval(0, conditions.offer.checkout.values.length - 1)],
-        "features": features.slice(0, genRndNumInterval(1, features.length)),
+        "price": generateRandomNumberInInterval(conditions.offer.price.min, conditions.offer.price.max),
+        "type": conditions.offer.type.values[generateRandomNumberInInterval(0, conditions.offer.type.values.length - 1)],
+        "rooms": generateRandomNumberInInterval(conditions.offer.rooms.min, conditions.offer.rooms.max),
+        "guests": generateRandomNumberInInterval(conditions.offer.guests.min, conditions.offer.guests.min + 10),
+        "checkin": conditions.offer.checkin.values[generateRandomNumberInInterval(0, conditions.offer.checkin.values.length - 1)],
+        "checkout": conditions.offer.checkout.values[generateRandomNumberInInterval(0, conditions.offer.checkout.values.length - 1)],
+        "features": features.slice(0, generateRandomNumberInInterval(1, features.length)),
         "description": ``,
         "photos": photos,
       },
@@ -44,7 +44,7 @@ const generateEntity = () => {
       "x": location.x,
       "y": location.y,
     },
-    "date": new Date().setUTCHours(0, 0, 0, 0) / 1000 - genRndNumInterval(0, conditions.date.daysBack) * conditions.date.dayUNIX,
+    "date": new Date().setUTCHours(0, 0, 0, 0) / 1000 - generateRandomNumberInInterval(0, conditions.date.daysBack) * conditions.date.dayUNIX,
   };
 };
 

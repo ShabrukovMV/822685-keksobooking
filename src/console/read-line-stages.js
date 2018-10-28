@@ -51,7 +51,7 @@ class ReadLineStages {
       this.rl.prompt();
     } catch (e) {
       try {
-        await generateToFile.execute(this.fileName, this.numberElements);
+        await generateToFile(this.fileName, this.numberElements);
         console.log(`Данные сгенерированы успешно!`);
         this.rl.close();
       } catch (errGenerateToFile) {
@@ -64,7 +64,7 @@ class ReadLineStages {
   async fileExists(line) {
     if (line === `y`) {
       try {
-        await generateToFile.execute(this.fileName, this.numberElements);
+        await generateToFile(this.fileName, this.numberElements);
         console.log(`Данные успешно сгенерированы и перезаписаны!`);
         this.rl.close();
       } catch (err) {

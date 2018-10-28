@@ -10,7 +10,7 @@ const MongoError = require(`mongodb`).MongoError;
 
 const OFFERS_ROUTE_ERRORS = (err, req, res, _next) => {
   if (err instanceof ValidationError) {
-    logger.error(`Ошибка валидации: ${JSON.stringify(err.errors)}`);
+    logger.error(`${err.message}: ${JSON.stringify(err.errors)}`);
     return res.status(err.code).send(err.errors);
   }
   if (err instanceof NotFoundError) {

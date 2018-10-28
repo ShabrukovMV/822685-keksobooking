@@ -160,14 +160,14 @@ describe(`Модуль generate`, () => {
 describe(`Создание и перезапись файлов`, () => {
   it(`Должна выдаваться ошибка при неудачной записи данных`, () => {
     const testFileName = `folder/testfile.json`;
-    return generateToFile.execute(testFileName, 1)
+    return generateToFile(testFileName, 1)
       .then(() => assert.fail(`Путь ${testFileName} должен быть недоступен!`))
       .catch((err) => assert.ok(err));
   });
 
   it(`Должен создаваться новый файл`, () => {
     const testFileName = `testfile.json`;
-    return generateToFile.execute(testFileName, 1)
+    return generateToFile(testFileName, 1)
       .then(fsaccess(testFileName))
       .then(fsunlink(testFileName))
       .catch((err) => assert.fail(err.message));

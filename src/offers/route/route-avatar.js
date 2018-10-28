@@ -17,7 +17,7 @@ const schemeOfferDB = require(`../validation-scheme-db`);
 
 const names = require(`../../../test/generator/generate-conditions`).author.name.values;
 
-const asyncMW = require(`./async-middle-ware`);
+const asyncMiddleware = require(`./async-middle-ware`);
 
 const prepareOffer = (offerData, avatar) => {
   if (!offerData.hasOwnProperty(`offer`)) {
@@ -48,7 +48,7 @@ const prepareOffer = (offerData, avatar) => {
 };
 
 module.exports = (offersRouter) => {
-  offersRouter.get(`/:date/avatar`, asyncMW(async (req, res) => {
+  offersRouter.get(`/:date/avatar`, asyncMiddleware(async (req, res) => {
     const offerDate = req.params.date;
 
     logger.verbose(`В запросе указана дата {${offerDate}}`);
@@ -86,16 +86,16 @@ module.exports = (offersRouter) => {
     stream.pipe(res);
   }));
 
-  offersRouter.post(``, jsonParser, upload.any(), asyncMW(async (req, res) => {
-    let body = {...req.body};
+  offersRouter.post(``, jsonParser, upload.any(), asyncMiddleware(async (req, res) => {
+    let offerDate = {...req.body};
     const pictures = req.files;
 
-    logger.verbose(`Содержимое запроса: ${JSON.stringify(body)}`);
+    logger.verbose(`Содержимое запроса: ${JSON.stringify(offerDate)}`);
     logger.verbose(`Тип содержимого: ${req.headers[`content-type`]}`);
 
-    body = prepareOffer(body, pictures);
+    offerDate = prepareOffer(offerDate, pictures);
 
-    const validated = validate(schemeOfferDB, body);
+    const validated = validate(schemeOfferDB, offerDate);
 
     const result = await offersRouter.offerStore.putOffer(validated);
     const insertedId = result.insertedId;
