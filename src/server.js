@@ -7,7 +7,7 @@ const express = require(`express`);
 
 const offerStore = require(`./offers/store`);
 const imageStore = require(`./images/store`);
-const offersRouter = require(`./offers/route/indexroute`)(offerStore, imageStore);
+const offersRouter = require(`./offers/route/route`)(offerStore, imageStore);
 
 const app = express();
 

@@ -10,7 +10,7 @@ const app = express();
 const offerStoreMock = require(`./mock/store-mock`);
 const imageStoreMock = require(`./mock/image-store-mock`);
 
-const offersRouter = require(`../src/offers/route/indexroute`)(offerStoreMock, imageStoreMock);
+const offersRouter = require(`../src/offers/route/route`)(offerStoreMock, imageStoreMock);
 
 app.use(`/api/offers`, offersRouter);
 

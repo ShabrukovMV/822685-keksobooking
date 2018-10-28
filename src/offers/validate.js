@@ -22,8 +22,7 @@ function validateObject(path, scheme, testingData) {
   const check = new ValidationMethods();
   let errors = [];
 
-  for (let i = 0; i < Object.keys(scheme).length; i++) {
-    let key = Object.keys(scheme)[i];
+  for (const key of Object.keys(scheme)) {
     if (checkProperty(testingData, key)) {
       if (checkTypeOf(testingData[key], scheme[key].typeOf)) {
 
