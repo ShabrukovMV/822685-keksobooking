@@ -36,7 +36,11 @@ module.exports =
         },
         address: {
           typeOf: `string`,
-          checks: [{checkMethod: `checkRegExp`, args: [/^\d+.+,.+\d+$/], errmsg: `Поле "offer.address" не формата "x,y"`}],
+          checks: [{
+            checkMethod: `checkRegExp`,
+            args: [/^\d+.+,.+\d+$/],
+            errmsg: `Поле "offer.address" не формата "x,y"`,
+          }],
         },
         price: {
           typeOf: `number`,
@@ -66,7 +70,7 @@ module.exports =
           typeOf: `number`,
           checks: [{
             checkMethod: `checkGreaterThen`,
-            args: [conditions.offer.guests.min],
+            args: [conditions.offer.guests.min - 1],
             errmsg: `Значение поля "offer.guests" меньше ${conditions.offer.guests.min}`,
           }],
         },
