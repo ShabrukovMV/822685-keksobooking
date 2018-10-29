@@ -29,7 +29,7 @@ module.exports = {
 
     rl.on(`close`, () => {
       console.log(`Всего хорошего!`);
-      process.exit(1);
+      process.exit();
     });
 
     console.log(`Привет пользователь!

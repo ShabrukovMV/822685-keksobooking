@@ -30,7 +30,7 @@ const generateEntity = () => {
       {
         "title": conditions.offer.title.values[generateRandomNumberInInterval(0, conditions.offer.title.values.length - 1)],
         "address": `${location.x},${location.y}`,
-        "price": generateRandomNumberInInterval(conditions.offer.price.min, conditions.offer.price.max),
+        "price": generateRandomNumberInInterval(conditions.offer.price.min / 1000, conditions.offer.price.max / 1000) * 1000,
         "type": conditions.offer.type.values[generateRandomNumberInInterval(0, conditions.offer.type.values.length - 1)],
         "rooms": generateRandomNumberInInterval(conditions.offer.rooms.min, conditions.offer.rooms.max),
         "guests": generateRandomNumberInInterval(conditions.offer.guests.min, conditions.offer.guests.min + 10),

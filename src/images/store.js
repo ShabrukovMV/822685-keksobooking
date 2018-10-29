@@ -10,7 +10,7 @@ class ImageStore {
     if (this._bucket) {
       return this._bucket;
     }
-    const dBase = await db;
+    const dBase = await db.open();
     if (!this._bucket) {
       this._bucket = new mongodb.GridFSBucket(dBase, {chunkSizeBytes: 512 * 1024, bucketName: `avatars`});
     }

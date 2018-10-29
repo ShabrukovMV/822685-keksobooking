@@ -11,7 +11,24 @@ const {
 const url = `mongodb://${DB_HOST}`;
 const options = {useNewUrlParser: true};
 
-module.exports = MongoClient.connect(url, options).then((client) => client.db(DB_PATH)).catch((e) => {
-  logger.error(`Не могу соединиться с MongoDB, ошибка: `, e.message);
-  process.exit(1);
-});
+class DataBase {
+  constructor() {
+    this.dataBaseInstance = 0;
+  }
+
+  async open() {
+    if (this.dataBaseInstance !== 0) {
+      return this.dataBaseInstance;
+    }
+    try {
+      this.dataBaseInstance = await MongoClient.connect(url, options);
+      this.dataBaseInstance = this.dataBaseInstance.db(DB_PATH);
+      return this.dataBaseInstance;
+    } catch (e) {
+      logger.error(`Не могу соединиться с MongoDB, ошибка: `, e);
+      return process.exit(1);
+    }
+  }
+}
+
+module.exports = new DataBase();
