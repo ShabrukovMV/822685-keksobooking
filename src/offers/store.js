@@ -1,20 +1,20 @@
 'use strict';
 
 const logger = require(`../logger`);
-const dBase = require(`../database/db`);
+const db = require(`../database/db`);
 
 class OfferStore {
   constructor() {
-    this.collection = 0;
+    this.collection = null;
   }
 
   async _collection() {
-    if (this.collection !== 0) {
+    if (this.collection) {
       return this.collection;
     }
     try {
-      const db = await dBase.open();
-      this.collection = db.collection(`offers`);
+      const dataBase = await db.open();
+      this.collection = dataBase.collection(`offers`);
       this.collection.createIndex({date: 1});
     } catch (e) {
       logger.error(`Не удалось настроить коллекцию offers`, e.message);

@@ -5,6 +5,7 @@ const readline = require(`readline`);
 const author = require(`./author`);
 const packageInfo = require(`../../package`);
 const generateEntity = require(`../../test/generator/generate`);
+const db = require(`../database/db`);
 const offerStore = require(`../offers/store`);
 
 const validate = require(`../offers/validate`);
@@ -29,7 +30,6 @@ module.exports = {
 
     rl.on(`close`, () => {
       console.log(`Всего хорошего!`);
-      process.exit();
     });
 
     console.log(`Привет пользователь!
@@ -44,7 +44,7 @@ module.exports = {
 
     if (answer === `n`) {
       console.log(`Вы отказались от заполнения базы данных`);
-      rl.close();
+      return rl.close();
     }
 
     do {
@@ -54,7 +54,7 @@ module.exports = {
 
     if (answer === 0) {
       console.log(`Вы отказались от ввода количества записей`);
-      rl.close();
+      return rl.close();
     }
 
     let testOffers;
@@ -77,14 +77,16 @@ module.exports = {
 
         if (answer === `n`) {
           console.log(`Вы отказались от заполнения базы данных`);
-          rl.close();
+          return rl.close();
         }
       }
     } while (!isValid);
 
     answer = await offerStore.putManyOffers(testOffers);
-
     console.log(`Запись прошла успешно. Количество добавленных записей: ${answer.insertedCount}`);
-    rl.close();
+
+    await db.close();
+
+    return rl.close();
   },
 };

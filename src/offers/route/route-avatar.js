@@ -19,12 +19,17 @@ const names = require(`../../../test/generator/generate-conditions`).author.name
 
 const asyncMiddleware = require(`./async-middle-ware`);
 
+const imageFields = [{name: `avatar`, maxCount: 1}, {name: `preview`, maxCount: 8}];
+
 const prepareOffer = (offerData, avatar) => {
   if (!offerData.hasOwnProperty(`offer`)) {
     const date = Math.floor(new Date() / 1000);
     const [x, y] = offerData.address ? offerData.address.match(/\d+/g) : [undefined, undefined];
     if (!offerData.hasOwnProperty(`photos`)) {
       offerData.photos = [];
+    }
+    if (!offerData.hasOwnProperty(`features`)) {
+      offerData.features = [];
     }
     if (offerData.hasOwnProperty(`features`) && !Array.isArray(offerData.features)) {
       offerData.features = [offerData.features];
@@ -41,6 +46,7 @@ const prepareOffer = (offerData, avatar) => {
     if (avatar && avatar.length > 0) {
       logger.verbose(`Загружен файл аватара: ${avatar[0].originalname}, тип: ${avatar[0].mimetype}, размер ${avatar[0].size} байт`);
       offerData.author.avatar = `/api/offers/${date}/avatar`;
+      offerData.offer.photos[0] = `/api/offers/${date}/avatar`;
     }
     logger.verbose(`Преобразованное содержимое запроса: ${JSON.stringify(offerData)}`);
   }
@@ -87,23 +93,25 @@ module.exports = (offersRouter) => {
     stream.pipe(res);
   }));
 
-  offersRouter.post(``, jsonParser, upload.any(), asyncMiddleware(async (req, res) => {
-    let offerDate = {...req.body};
-    const pictures = req.files;
+  offersRouter.post(``, jsonParser, upload.fields(imageFields), asyncMiddleware(async (req, res) => {
+    let offerData = {...req.body};
+    const images = req.files;
 
-    logger.verbose(`Содержимое запроса: ${JSON.stringify(offerDate)}`);
+    // console.log(images);
+
+    logger.verbose(`Содержимое запроса: ${JSON.stringify(offerData)}`);
     logger.verbose(`Тип содержимого: ${req.headers[`content-type`]}`);
 
-    offerDate = prepareOffer(offerDate, pictures);
+    offerData = prepareOffer(offerData, images.avatar);
 
-    const validated = validate(schemeOfferDB, offerDate);
+    const validated = validate(schemeOfferDB, offerData);
 
     const result = await offersRouter.offerStore.putOffer(validated);
     const insertedId = result.insertedId;
 
-    if (pictures && pictures[0]) {
-      await offersRouter.imageStore.save(insertedId, toStream(pictures[0].buffer));
-      logger.verbose(`Файл аватара: ${pictures[0].originalname}, размер ${pictures[0].size} байт сохранён в БД`);
+    if (images.avatar && images.avatar[0]) {
+      await offersRouter.imageStore.save(insertedId, toStream(images.avatar[0].buffer));
+      logger.verbose(`Файл аватара: ${images.avatar[0].originalname}, размер ${images.avatar[0].size} байт сохранён в БД`);
     }
     res.send(validated);
   }));
