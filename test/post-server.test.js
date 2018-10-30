@@ -52,6 +52,7 @@ describe(`Методы POST api/offers`, () => {
       .field(`checkin`, `12:00`)
       .field(`checkout`, `12:00`)
       .field(`rooms`, 3)
+      .field(`features`, `wifi`)
       .attach(`avatar`, `./test/fixtures/avatar.png`)
       .set(`Accept`, `multipart/form-data`)
       .expect(200)
