@@ -6,10 +6,12 @@ const generateRandomNumberInInterval = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let randomPos = Math.floor(Math.random() * (i + 1));
-    [array[i], array[randomPos]] = [array[randomPos], array[i]];
+  const shuffledArray = [...array];
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const randomPos = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[randomPos]] = [shuffledArray[randomPos], shuffledArray[i]];
   }
+  return shuffledArray;
 };
 
 const generateEntity = () => {
@@ -17,10 +19,8 @@ const generateEntity = () => {
     "x": generateRandomNumberInInterval(conditions.location.x.min, conditions.location.x.max),
     "y": generateRandomNumberInInterval(conditions.location.y.min, conditions.location.y.max),
   };
-  let features = [...conditions.offer.features.values];
-  let photos = [...conditions.offer.photos.values];
-  shuffleArray(features);
-  shuffleArray(photos);
+  const features = shuffleArray(conditions.offer.features.values);
+  const photos = shuffleArray(conditions.offer.photos.values);
 
   return {
     "author": {
@@ -29,7 +29,7 @@ const generateEntity = () => {
     "offer":
       {
         "title": conditions.offer.title.values[generateRandomNumberInInterval(0, conditions.offer.title.values.length - 1)],
-        "address": `${location.x},${location.y}`,
+        "address": `${location.x}, ${location.y}`,
         "price": generateRandomNumberInInterval(conditions.offer.price.min / 1000, conditions.offer.price.max / 1000) * 1000,
         "type": conditions.offer.type.values[generateRandomNumberInInterval(0, conditions.offer.type.values.length - 1)],
         "rooms": generateRandomNumberInInterval(conditions.offer.rooms.min, conditions.offer.rooms.max),

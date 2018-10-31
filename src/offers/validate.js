@@ -18,9 +18,9 @@ const makeErrorMessage = (key, message) => {
   return {error: `Validation Error`, fieldName: key, errorMessage: message};
 };
 
-function validateObject(path, scheme, testingData) {
+const validateObject = (path, scheme, testingData) => {
   const check = new ValidationMethods();
-  let errors = [];
+  const errors = [];
 
   for (const key of Object.keys(scheme)) {
     if (checkProperty(testingData, key)) {
@@ -51,7 +51,7 @@ function validateObject(path, scheme, testingData) {
     throw new ValidationError(errors);
   }
   return testingData;
-}
+};
 
 module.exports = (schemeOffer, data) => {
   return validateObject(``, schemeOffer, data);

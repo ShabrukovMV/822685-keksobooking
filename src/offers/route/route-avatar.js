@@ -46,7 +46,6 @@ const prepareOffer = (offerData, images) => {
     if (images && images.avatar && images.avatar.length > 0) {
       logger.verbose(`Загружен файл аватара: ${images.avatar[0].originalname}, тип: ${images.avatar[0].mimetype}, размер ${images.avatar[0].size} байт`);
       offerData.author.avatar = `/api/offers/${date}/avatar`;
-      offerData.offer.photos[0] = `/api/offers/${date}/avatar`;
     }
     logger.verbose(`Преобразованное содержимое запроса: ${JSON.stringify(offerData)}`);
   }
@@ -96,8 +95,6 @@ module.exports = (offersRouter) => {
   offersRouter.post(``, jsonParser, upload.fields(imageFields), asyncMiddleware(async (req, res) => {
     let offerData = {...req.body};
     const images = req.files;
-
-    console.log(images);
 
     logger.verbose(`Содержимое запроса: ${JSON.stringify(offerData)}`);
     logger.verbose(`Тип содержимого: ${req.headers[`content-type`]}`);

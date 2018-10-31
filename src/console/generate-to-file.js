@@ -7,7 +7,7 @@ const fileWriteOptions = {encoding: `utf-8`, mode: 0o644};
 
 module.exports = (path, num) => {
   return new Promise((resolve, reject) => {
-    let elements = [];
+    const elements = [];
     for (let i = 0; i < num; i++) {
       elements.push(generateEntity());
     }
