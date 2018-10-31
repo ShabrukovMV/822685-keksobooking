@@ -71,8 +71,8 @@ describe(`Модуль generate`, () => {
     it(`Существует поле "offer.address" типа "string" формата "location.x,location.y"`, () => {
       assert(entity[`offer`].hasOwnProperty(`address`), `Поле "offer.address" отсутствует`);
       assert.equal(typeof entity[`offer`][`address`], `string`);
-      assert.notEqual(entity[`offer`][`address`].search(/^\d+,\d+$/), -1, `Поле "offer.address" не формата "x,y"`);
-      assert.equal(entity[`offer`][`address`], `${entity[`location`][`x`]},${entity[`location`][`y`]}`);
+      assert.notEqual(entity[`offer`][`address`].search(/^\d+.+,.+\d+$/), -1, `Поле "offer.address" не формата "x, y"`);
+      assert.equal(entity[`offer`][`address`], `${entity[`location`][`x`]}, ${entity[`location`][`y`]}`);
     });
     it(`Существует поле "offer.price" типа "number" от ${conditions.offer.price.min} до ${conditions.offer.price.max}`, () => {
       assert(entity[`offer`].hasOwnProperty(`price`), `Поле "offer.price" отсутствует`);
